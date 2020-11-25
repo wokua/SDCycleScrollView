@@ -3,4 +3,5 @@ target 'SDCycleScrollView'
 
 #use_frameworks!
 
-pod 'YYKit'
+pod 'YYKit', '~> 1.0.9'
+
