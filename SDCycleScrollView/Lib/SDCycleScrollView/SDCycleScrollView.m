@@ -33,8 +33,7 @@
 #import "SDCollectionViewCell.h"
 #import "UIView+SDExtension.h"
 #import "TAPageControl.h"
-#import "SDWebImageManager.h"
-#import "UIImageView+WebCache.h"
+#import <YYKit/YYKit.h>
 
 #define kCycleScrollViewInitialPageControlDotSize CGSizeMake(10, 10)
 
@@ -477,7 +476,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
 
 + (void)clearImagesCache
 {
-    [[[SDWebImageManager sharedManager] imageCache] clearWithCacheType:SDImageCacheTypeDisk completion:nil];
+    [[YYWebImageManager sharedManager].cache removeAssociatedValues];
 }
 
 #pragma mark - life circles
@@ -593,7 +592,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     if (!self.onlyDisplayText && [imagePath isKindOfClass:[NSString class]]) {
         if ([imagePath hasPrefix:@"http"]) {
-            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:self.placeholderImage];
+            [cell.imageView setImageWithURL:[NSURL URLWithString:imagePath] placeholder:self.placeholderImage options:YYWebImageOptionProgressive completion:nil];
         } else {
             UIImage *image = [UIImage imageNamed:imagePath];
             if (!image) {

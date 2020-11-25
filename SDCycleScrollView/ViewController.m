@@ -31,7 +31,7 @@
 #import "ViewController.h"
 #import "SDCycleScrollView.h"
 #import "CustomCollectionViewCell.h"
-#import "UIImageView+WebCache.h"
+#import <YYKit/YYKit.h>
 
 @interface ViewController () <SDCycleScrollViewDelegate>
 
@@ -230,7 +230,12 @@
 - (void)setupCustomCell:(UICollectionViewCell *)cell forIndex:(NSInteger)index cycleScrollView:(SDCycleScrollView *)view
 {
     CustomCollectionViewCell *myCell = (CustomCollectionViewCell *)cell;
-    [myCell.imageView sd_setImageWithURL:_imagesURLStrings[index]];
+    [myCell.imageView setImageWithURL:_imagesURLStrings[index] placeholder:[UIImage imageNamed:@"h7"] options:YYWebImageOptionProgressive progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+    } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+        return image;
+    } completion:nil];
+//    [myCell.imageView yy:_imagesURLStrings[index]];
 }
 
 @end
