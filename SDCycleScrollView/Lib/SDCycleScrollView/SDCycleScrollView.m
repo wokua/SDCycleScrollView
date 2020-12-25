@@ -300,7 +300,15 @@ NSString * const ID = @"SDCycleScrollViewCell";
     _imagePathsGroup = imagePathsGroup;
     
     _totalItemsCount = self.infiniteLoop ? self.imagePathsGroup.count * 100 : self.imagePathsGroup.count;
+
     
+    __weak SDCycleScrollView * weakself = self;
+    [self.mainView performBatchUpdates:^{
+        
+    } completion:^(BOOL finished) {
+        [weakself.mainView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:(int)(self.infiniteLoop ? 0 :self.totalItemsCount*0.5) inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    }];
+//    [self.mainView reloadData];
     if (imagePathsGroup.count > 1) { // 由于 !=1 包含count == 0等情况
         self.mainView.scrollEnabled = YES;
         [self setAutoScroll:self.autoScroll];
@@ -308,9 +316,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
         self.mainView.scrollEnabled = NO;
         [self invalidateTimer];
     }
-    
     [self setupPageControl];
-    [self.mainView reloadData];
 }
 
 - (void)setImageURLStringsGroup:(NSArray *)imageURLStringsGroup
